@@ -57,7 +57,7 @@ export const CommentDiscussionContextProvider = ({ children }) => {
   const sortComments = useCallback((sortOrder = "DESC") => {
     reducerDispatch({
       type: COMMENT_DISCUSSION_ACTIONS.SORT_COMMENTS,
-      payload: sortOrder,
+      payload: { sortOrder },
     });
   }, []);
 

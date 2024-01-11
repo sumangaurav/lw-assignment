@@ -52,7 +52,12 @@ const EditDisplayComment = ({ commentId }) => {
       )}
 
       <ReplyThread parentCommentId={commentId}>
-        {isReplying ? <CreateReply onPostClick={handleReplyPostClick} /> : null}
+        {isReplying ? (
+          <div className="mb-2">
+            {" "}
+            <CreateReply onPostClick={handleReplyPostClick} />
+          </div>
+        ) : null}
       </ReplyThread>
     </>
   );
