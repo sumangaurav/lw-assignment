@@ -6,6 +6,9 @@ import { useReducer } from "react";
 import commentDiscussionReducer, {
   COMMENT_DISCUSSION_ACTIONS,
 } from "../reducers/commentDiscussionReducer";
+import { useEffect } from "react";
+import { CommentPersistenceService } from "../services/CommentPersistenceService";
+import { useRef } from "react";
 
 const defaultCommentDiscussionState = {
   sortOrder: "DESC",
@@ -21,10 +24,19 @@ export const useCommentDiscussionContext = () =>
   useContext(CommentDiscussionContext);
 
 export const CommentDiscussionContextProvider = ({ children }) => {
+  const isPersistedStateLoaded = useRef(false);
+
   const [state, reducerDispatch] = useReducer(
     commentDiscussionReducer,
     defaultCommentDiscussionState
   );
+
+  const initialize = useCallback((state) => {
+    reducerDispatch({
+      type: COMMENT_DISCUSSION_ACTIONS.INITIALIZE,
+      payload: state,
+    });
+  }, []);
 
   const addComment = useCallback(({ commentText, name, timestamp }) => {
     reducerDispatch({
@@ -61,7 +73,27 @@ export const CommentDiscussionContextProvider = ({ children }) => {
     });
   }, []);
 
-  console.log(state);
+  useEffect(() => {
+    if (isPersistedStateLoaded.current)
+      CommentPersistenceService.set("comments", JSON.stringify(state));
+  }, [state]);
+
+  useEffect(() => {
+    const getPersistedState = async () => {
+      const serializedState = await CommentPersistenceService.get("comments");
+
+      try {
+        const parsedState = JSON.parse(serializedState);
+        initialize(parsedState);
+      } catch (err) {
+        console.error(err);
+      }
+
+      isPersistedStateLoaded.current = true;
+    };
+
+    getPersistedState();
+  }, []);
 
   return (
     <CommentDiscussionContext.Provider

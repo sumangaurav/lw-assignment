@@ -1,6 +1,7 @@
 import { generateUniqId } from "../utils";
 
 export const COMMENT_DISCUSSION_ACTIONS = {
+  INITIALIZE: "INITIALIZE",
   ADD_COMMENT: "ADD_COMMENT",
   ADD_REPLY: "ADD_REPLY",
   EDIT_COMMENT: "EDIT_COMMENT",
@@ -11,6 +12,9 @@ export const COMMENT_DISCUSSION_ACTIONS = {
 export default function commentDiscussionReducer(state, action) {
   const { type, payload } = action;
   switch (type) {
+    case COMMENT_DISCUSSION_ACTIONS.INITIALIZE: {
+      return payload;
+    }
     case COMMENT_DISCUSSION_ACTIONS.ADD_COMMENT: {
       const id = generateUniqId();
       const { name, commentText, timestamp } = payload;

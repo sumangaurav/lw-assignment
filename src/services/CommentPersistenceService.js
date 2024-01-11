@@ -1,6 +1,6 @@
-/* The current implementation for UserDataPersistence relies on saving data in localStorage */
+/* The current implementation for CommentPersistenceService relies on saving data in localStorage */
 
-export const UserDataPersistenceService = {
+export const CommentPersistenceService = {
   // Get an item from localStorage
   async get(key) {
     return new Promise((resolve, reject) => {
