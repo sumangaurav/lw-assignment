@@ -1,14 +1,14 @@
 import React from "react";
 import { useCommentDiscussionContext } from "../context/CommentDiscussionContext";
 
-const useCommentData = (commentId) => {
+const useCommentList = (commentId) => {
   const { state } = useCommentDiscussionContext();
 
   /* 
     expected shape of commentData obj:
-    { name, commentText, timestamp, replies, parentId }
+    { name, commentText, timestamp, replies, parentCommentId }
     */
-  return state?.commentData[commentId] ?? {};
+  return commentId ? state?.commentData[commentId]?.replies : state?.commentIds;
 };
 
-export default useCommentData;
+export default useCommentList;

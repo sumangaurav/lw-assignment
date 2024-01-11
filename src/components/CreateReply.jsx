@@ -1,23 +1,25 @@
 import React from "react";
+import EditComment from "./EditComment";
+import { useRef } from "react";
+import { useEffect } from "react";
 
-const CreateReply = ({ parentCommentId }) => {
-  const { addComment } = useCommentDiscussionContext();
+const CreateReply = ({ onPostClick }) => {
+  const ref = useRef();
 
-  const handlePostClick = useCallback(async ({ name, commentText }) => {
-    addComment({
-      commentText,
-      name,
-      timestamp: new Date().valueOf(),
+  useEffect(() => {
+    ref?.current?.scrollIntoView({
+      behavior: "smooth",
     });
   }, []);
 
   return (
-    <EditComment
-      isEditing={false}
-      isReply={false}
-      commentId={null}
-      onPostClick={handlePostClick}
-    />
+    <div ref={ref}>
+      <EditComment
+        isEditing={false}
+        commentId={null}
+        onPostClick={onPostClick}
+      />
+    </div>
   );
 };
 

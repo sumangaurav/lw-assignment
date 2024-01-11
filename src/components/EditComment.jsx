@@ -2,12 +2,14 @@ import React from "react";
 import { useCallback } from "react";
 import { forwardRef } from "react";
 import { useRef } from "react";
+import useCommentData from "../hooks/useCommentData";
 
-const NameField = forwardRef(({ value, disabled }, ref) => {
+const NameField = forwardRef(({ value, disabled, autoFocus }, ref) => {
   return (
     <input
       ref={ref}
       className="w-full px-2 py-1 border border-lw-border rounded-sm disabled:text-gray-400 disabled:cursor-not-allowed"
+      autoFocus={autoFocus}
       defaultValue={value}
       placeholder="Name"
       disabled={disabled}
@@ -16,11 +18,12 @@ const NameField = forwardRef(({ value, disabled }, ref) => {
 });
 
 const CommentField = forwardRef((props, ref) => {
-  const { value } = props;
+  const { value, autoFocus } = props;
   return (
     <textarea
       ref={ref}
       defaultValue={value}
+      autoFocus={autoFocus}
       className="w-full resize-none px-2 py-1 border border-lw-border rounded-sm"
       placeholder="Comment"
     ></textarea>
@@ -40,12 +43,18 @@ const PostCommentAction = ({ onPostClick }) => {
 
 const EditComment = ({
   isEditing = false,
-  isReply = false,
   commentId,
-  name = "",
-  commentText = "",
   onPostClick = async () => {},
 }) => {
+  const {
+    name = "",
+    commentText = "",
+    parentId = null,
+  } = useCommentData(commentId);
+
+  const isCreateNewComment = commentId === null;
+  const isReply = parentId !== null;
+
   const nameRef = useRef(null);
   const commentRef = useRef(null);
 
@@ -64,7 +73,7 @@ const EditComment = ({
       commentText,
     });
 
-    if (commentId === null) clearComment();
+    if (isCreateNewComment) clearComment();
 
     /* do something here */
   }, []);
@@ -72,8 +81,17 @@ const EditComment = ({
   return (
     <div className="px-4 py-2 bg-lw-offwhite flex flex-col gap-2 justify-stretch border border-lw-border rounded">
       <p className="text-left font-medium">{isReply ? "Reply" : "Comment"}</p>
-      <NameField ref={nameRef} value={name} disabled={isEditing} />
-      <CommentField ref={commentRef} value={commentText} />
+      <NameField
+        autoFocus={!isEditing}
+        ref={nameRef}
+        value={name}
+        disabled={isEditing}
+      />
+      <CommentField
+        autoFocus={isEditing}
+        ref={commentRef}
+        value={commentText}
+      />
       <PostCommentAction onPostClick={handlePost} />
     </div>
   );

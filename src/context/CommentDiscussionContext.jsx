@@ -61,6 +61,8 @@ export const CommentDiscussionContextProvider = ({ children }) => {
     });
   }, []);
 
+  console.log(state);
+
   return (
     <CommentDiscussionContext.Provider
       value={{

@@ -1,14 +1,14 @@
 import React from "react";
 import { formatDate } from "../utils";
 import { useCallback } from "react";
+import useCommentData from "../hooks/useCommentData";
 
 const CommentDisplay = ({
-  name = "",
-  commentText = "",
-  timestamp,
+  commentId,
   onEditClick = () => {},
+  onReplyClick = () => {},
 }) => {
-  const handleReplyClick = useCallback(() => {}, []);
+  const { name, commentText, timestamp, parentId } = useCommentData(commentId);
 
   return (
     <div className="px-6 py-2 bg-lw-offwhite rounded border border-lw-border">
@@ -19,7 +19,8 @@ const CommentDisplay = ({
       <CommentText text={commentText} />
       <CommentActions
         onEditClick={onEditClick}
-        onReplyClick={handleReplyClick}
+        onReplyClick={onReplyClick}
+        showReply={parentId === null}
       />
     </div>
   );

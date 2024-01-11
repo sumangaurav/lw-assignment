@@ -2,9 +2,10 @@ import React from "react";
 import { useCommentDiscussionContext } from "../context/CommentDiscussionContext";
 import EditDisplayComment from "./EditDisplayComment";
 import { useCallback } from "react";
+import useCommentList from "../hooks/useCommentList";
 
-const CommentThread = () => {
-  const { comments } = useCommentDiscussionContext();
+const CommentList = () => {
+  const commentIds = useCommentList();
   const handleSort = useCallback(() => {}, []);
   return (
     <div className="mt-2">
@@ -14,12 +15,12 @@ const CommentThread = () => {
         </button>
       </p>
       <div className="grid gap-2">
-        {comments.map((comment) => {
-          return <EditDisplayComment {...comment} key={comment.id} />;
+        {commentIds.map((commentId) => {
+          return <EditDisplayComment commentId={commentId} key={commentId} />;
         })}
       </div>
     </div>
   );
 };
 
-export default CommentThread;
+export default CommentList;
