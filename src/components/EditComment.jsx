@@ -43,6 +43,7 @@ const PostCommentAction = ({ onPostClick }) => {
 
 const EditComment = ({
   isEditing = false,
+  isReply = false,
   commentId,
   onPostClick = async () => {},
 }) => {
@@ -53,27 +54,44 @@ const EditComment = ({
   } = useCommentData(commentId);
 
   const isCreateNewComment = commentId === null;
-  const isReply = parentId !== null;
+  /* if isReply is passed as true (for case of creating new reply ) use that else decide based on parentId */
+  isReply = isReply || parentId !== null;
 
   const nameRef = useRef(null);
   const commentRef = useRef(null);
 
   const clearComment = useCallback(() => {
-    nameRef.current.value = "";
-    commentRef.current.value = "";
+    if (nameRef?.current) nameRef.current.value = "";
+
+    if (commentRef?.current) commentRef.current.value = "";
+  }, []);
+
+  const isInputValid = useCallback((name, commentText) => {
+    let isValid = true;
+
+    if (name.length > 0 && name.trim().length > 0) isValid = isValid && true;
+    else isValid = false;
+
+    if (commentText.length > 0 && commentText.trim().length > 0)
+      isValid = isValid && true;
+    else isValid = false;
+
+    return isValid;
   }, []);
 
   const handlePost = useCallback(async () => {
     const nameText = nameRef?.current?.value;
     const commentText = commentRef?.current?.value;
 
-    await onPostClick({
-      commentId,
-      name: nameText,
-      commentText,
-    });
+    if (isInputValid(nameText, commentText)) {
+      await onPostClick({
+        commentId,
+        name: nameText,
+        commentText,
+      });
 
-    if (isCreateNewComment) clearComment();
+      if (isCreateNewComment) clearComment();
+    }
 
     /* do something here */
   }, []);

@@ -16,6 +16,7 @@ const CreateReply = ({ onPostClick }) => {
     <div ref={ref}>
       <EditComment
         isEditing={false}
+        isReply={true}
         commentId={null}
         onPostClick={onPostClick}
       />
