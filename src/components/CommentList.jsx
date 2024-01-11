@@ -17,7 +17,7 @@ const CommentList = () => {
   };
 
   const SortIconComp =
-    sortOrder !== "DESC" ? MdOutlineArrowDownward : MdOutlineArrowUpward;
+    sortOrder === "DESC" ? MdOutlineArrowDownward : MdOutlineArrowUpward;
   return (
     <div className="mt-2">
       <button
