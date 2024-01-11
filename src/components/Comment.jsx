@@ -1,6 +1,6 @@
 import React from "react";
 
-const Comment = () => {
+const Comment = ({ isEditing = false }) => {
   return <div></div>;
 };
 

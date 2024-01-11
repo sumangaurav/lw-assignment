@@ -9,7 +9,11 @@ function App() {
 
   return (
     <>
-      <CommentDisplay />
+      <CommentDisplay
+        commentText="Hello there"
+        date={new Date()}
+        name={"Shyam Sundar"}
+      />
     </>
   );
 }
