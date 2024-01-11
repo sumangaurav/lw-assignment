@@ -6,6 +6,7 @@ export default {
       colors: {
         "lw-blue": "#0094FF",
         "lw-offwhite": "#f6f6f6",
+        "lw-border": "#e4e4e4",
       },
     },
   },
