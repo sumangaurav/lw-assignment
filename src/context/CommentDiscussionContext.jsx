@@ -84,7 +84,8 @@ export const CommentDiscussionContextProvider = ({ children }) => {
 
       try {
         const parsedState = JSON.parse(serializedState);
-        initialize(parsedState);
+
+        if (parsedState?.commentIds?.length > 0) initialize(parsedState);
       } catch (err) {
         console.error(err);
       }
