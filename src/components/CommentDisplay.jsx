@@ -2,6 +2,8 @@ import React from "react";
 import { formatDate } from "../utils";
 import { useCallback } from "react";
 import useCommentData from "../hooks/useCommentData";
+import DeleteButton from "./DeleteButton";
+import { useCommentDiscussionContext } from "../context/CommentDiscussionContext";
 
 const CommentDisplay = ({
   commentId,
@@ -10,8 +12,10 @@ const CommentDisplay = ({
 }) => {
   const { name, commentText, timestamp, parentId } = useCommentData(commentId);
 
+  const { deleteComment } = useCommentDiscussionContext();
+
   return (
-    <div className="px-6 py-2 bg-lw-offwhite rounded border border-lw-border">
+    <div className="px-6 py-2 bg-lw-offwhite rounded border border-lw-border relative">
       <CommentHeader>
         <CommentUser name={name} />
         <CommentDate timestamp={timestamp} />
@@ -22,6 +26,7 @@ const CommentDisplay = ({
         onReplyClick={onReplyClick}
         showReply={parentId === null}
       />
+      <DeleteButton onClick={() => deleteComment(commentId)} />
     </div>
   );
 };

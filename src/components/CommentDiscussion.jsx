@@ -6,7 +6,7 @@ import CommentList from "./CommentList";
 const CommentDiscussion = () => {
   return (
     <CommentDiscussionContextProvider>
-      <div className="text-center max-h-screen overflow-auto">
+      <div className="text-center max-h-screen">
         <CreateComment />
         <CommentList />
       </div>

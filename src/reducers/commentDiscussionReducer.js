@@ -71,14 +71,14 @@ export default function commentDiscussionReducer(state, action) {
 
     case COMMENT_DISCUSSION_ACTIONS.DELETE_COMMENT: {
       const { id } = payload;
-      const isTopLevelComment = state.commendIds.some(
+      const isTopLevelComment = state.commentIds.some(
         (commentId) => commentId === id
       );
 
       if (isTopLevelComment) {
         return {
           ...state,
-          commentIds: state.commendIds.filter((commendId) => commendId !== id),
+          commentIds: state.commentIds.filter((commentId) => commentId !== id),
           commentData: {
             ...state.commentData,
             [id]: null,
