@@ -1,21 +1,32 @@
 import React from "react";
 import { formatDate } from "../utils";
+import { useCallback } from "react";
 
-const CommentDisplay = ({ name = "", commentText = "", date }) => {
+const CommentDisplay = ({
+  name = "",
+  commentText = "",
+  timestamp,
+  onEditClick = () => {},
+}) => {
+  const handleReplyClick = useCallback(() => {}, []);
+
   return (
-    <div className="px-6 py-2 bg-lw-offwhite rounded">
+    <div className="px-6 py-2 bg-lw-offwhite rounded border border-lw-border">
       <CommentHeader>
         <CommentUser name={name} />
-        <CommentDate date={date} />
+        <CommentDate timestamp={timestamp} />
       </CommentHeader>
       <CommentText text={commentText} />
-      <CommentActions />
+      <CommentActions
+        onEditClick={onEditClick}
+        onReplyClick={handleReplyClick}
+      />
     </div>
   );
 };
 
 const CommentText = ({ text }) => {
-  return <p className="text-left py-2">{text}</p>;
+  return <p className="text-left py-2 whitespace-pre-line">{text}</p>;
 };
 
 const CommentHeader = ({ children }) => {
@@ -26,15 +37,25 @@ const CommentUser = ({ name = "" }) => {
   return <p className="font-bold">{name}</p>;
 };
 
-const CommentDate = ({ date }) => {
+const CommentDate = ({ timestamp }) => {
+  const date = new Date(timestamp);
   return <p>{formatDate(date)}</p>;
 };
 
-const CommentActions = ({}) => {
+const CommentActions = ({ onEditClick, onReplyClick, showReply = true }) => {
   return (
     <div className="text-left">
-      <button className="font-semibold  text-lw-blue mr-2"> Reply </button>
-      <button className="font-semibold text-lw-blue"> Edit </button>
+      {showReply ? (
+        <button
+          className="font-semibold  text-lw-blue mr-2"
+          onClick={onReplyClick}
+        >
+          Reply
+        </button>
+      ) : null}
+      <button className="font-semibold text-lw-blue" onClick={onEditClick}>
+        Edit
+      </button>
     </div>
   );
 };
